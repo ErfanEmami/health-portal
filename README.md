@@ -37,3 +37,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## install shadcn
 npx shadcn@latest init
+
+## install db deps
+npm install drizzle-orm drizzle-kit pg

@@ -40,3 +40,8 @@ npx shadcn@latest init
 
 ## install db deps
 npm install drizzle-orm drizzle-kit @auth/drizzle-adapter pg
+
+## db setup
+run -> src/database/migrations/database_setup.sql
+npm run db:generate -> creates sql files
+npm run db:migrate -> applies to db

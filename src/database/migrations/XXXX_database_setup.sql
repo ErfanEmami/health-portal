@@ -1,0 +1,3 @@
+CREATE USER postgres WITH PASSWORD '1234';
+CREATE DATABASE health_portal;
+GRANT ALL PRIVILEGES ON DATABASE health_portal TO postgres;

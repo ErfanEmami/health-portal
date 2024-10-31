@@ -5,4 +5,4 @@ import * as schema from "./schema"
 import { getDatabaseUrl } from '@/lib/server_utils';
 
 const queryClient = postgres(getDatabaseUrl())
-export const db = drizzle(queryClient, { schema });
+export const db = drizzle(queryClient, { schema }); //singleton

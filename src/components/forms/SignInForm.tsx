@@ -22,6 +22,8 @@ import {
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { SignInSchema } from "@/schema/sign_in"
+import { signIn } from "@/server/actions/providers"
+import { toast } from "sonner"
 
 const SignInForm = () => {
   const rh_form = useForm<z.infer<typeof SignInSchema>>({
@@ -32,11 +34,14 @@ const SignInForm = () => {
     },
   })
  
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignInSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+    const res = await signIn(values)
+    if (res.success) {
+      // router.push("/dashboard")
+      toast.success("Signed In successfully")
+    } else {
+      toast.error(res.error)
+    }
   }
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>, onChange: ControllerRenderProps["onChange"]) => (

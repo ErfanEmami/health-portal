@@ -6,7 +6,7 @@ export const providers = pgTable('providers', {
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
   roll: text('roll'),
-  hashedPassword: text('hashed_password'),
+  hashedPassword: text('hashed_password').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
 
@@ -16,7 +16,7 @@ export const admins = pgTable('admins', {
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
   roll: text('roll'),
-  hashedPassword: text('hashed_password'),
+  hashedPassword: text('hashed_password').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
 });
 

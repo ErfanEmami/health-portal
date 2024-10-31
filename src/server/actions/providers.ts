@@ -11,7 +11,7 @@ import { db } from "@/database/db";
 import { eq } from "drizzle-orm";
 import { lucia } from "@/lib/lucia";
 import { cookies } from "next/headers";
-import { hash } from "argon2";
+import { hash, verify } from "argon2";
 
 export const signUp = async (data: z.infer<typeof SignUpSchema>) => {
   try {
@@ -51,7 +51,34 @@ export const signUp = async (data: z.infer<typeof SignUpSchema>) => {
 }
 
 export const signIn = async (data: z.infer<typeof SignInSchema>) => {
+  try {
+    // verify email
+    const [user] = await db
+    .select()
+    .from(providers)
+    .where(eq(providers.email, data.email))
 
+    if (!user) {
+    return { error: "Incorrect email or password", success: false }
+    }
+
+    // verify password
+    const correctPassword = await verify(user.hashedPassword, data.password)
+    if (!correctPassword) {
+    return { error: "Incorrect email or password", success: false }
+    }
+
+    // create session cookie
+    const session = await lucia.createSession(user.id, {})
+    const sessionCookie = await lucia.createSessionCookie(session.id)
+      
+    // set cookie on user's browser via NextJS
+    cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes)
+
+    return { success: true }
+  } catch (error) {
+    return { error: `Unable to sign in: ${error}`, success: false }
+  }
 }
 
 export const createProvider = withAuth(async (data: typeof providers.$inferInsert) => {
